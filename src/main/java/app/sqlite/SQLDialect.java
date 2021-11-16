@@ -1,4 +1,4 @@
-package sqlite;
+package app.sqlite;
 
 import org.hibernate.dialect.Dialect;
 
