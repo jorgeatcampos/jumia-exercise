@@ -11,6 +11,7 @@ public class PhoneNumberEnumTest {
     private static final String CAMEROON_COUNTRY_CODE = PhoneNumberEnum.CAMEROON.getCountryCode();
     private static final String CAMEROON_REGEX = PhoneNumberEnum.CAMEROON.getRegex();
 
+    private static final String UGANDA_COUNTRY = PhoneNumberEnum.UGANDA.getCountry();
     private static final String UGANDA_COUNTRY_CODE = PhoneNumberEnum.UGANDA.getCountryCode();
 
     @Test
@@ -33,5 +34,16 @@ public class PhoneNumberEnumTest {
     @Test
     public void getRegexByCountryCode_ThrowsExceptionIfCountryCodeIsInvalid() {
         Assertions.assertThrows(IllegalArgumentException.class, () -> PhoneNumberEnum.getRegexByCountryCode("Portugal"));
+    }
+
+    @Test
+    public void getCountryCodeByCountry_ShouldReturnCorrectCountryCode() {
+        Assertions.assertEquals(CAMEROON_COUNTRY_CODE, PhoneNumberEnum.getCountryCodeByCountry(CAMEROON_COUNTRY));
+        Assertions.assertNotEquals(CAMEROON_COUNTRY_CODE, PhoneNumberEnum.getCountryCodeByCountry(UGANDA_COUNTRY));
+    }
+
+    @Test
+    public void getCountryCodeByCountry_ThrowsExceptionIfCountryIsInvalid() {
+        Assertions.assertThrows(IllegalArgumentException.class, () -> PhoneNumberEnum.getCountryCodeByCountry("Portugal"));
     }
 }
