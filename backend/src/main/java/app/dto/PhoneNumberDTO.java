@@ -42,8 +42,12 @@ public class PhoneNumberDTO {
      *
      * @param customerName Name of the costumer who owns the phone number
      * @param phoneNumber Phone number
+     * @throws IllegalArgumentException If any of the parameters are null or if the phone number doesn't contain a country code
      */
     public PhoneNumberDTO(String customerName, String phoneNumber) {
+        if (customerName == null)
+            throw new IllegalArgumentException("Customer name can't be null.");
+
         String countryCode = PhoneNumberUtil.getCountryCodeFromPhoneNumber(phoneNumber);
 
         this.customerName = customerName;
