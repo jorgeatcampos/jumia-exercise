@@ -1,6 +1,6 @@
 package app.service;
 
-import app.dto.PhoneNumberDTO;
+import app.dto.PhoneNumberList;
 import app.dto.PhoneNumberRequest;
 import app.model.PhoneNumberEnum;
 import app.repository.PhoneNumberRepository;
@@ -20,10 +20,12 @@ public class PhoneNumberService {
 
     /**
      * Returns a list of phone numbers paginated and filtered, if any filtering parameter was specified
+     * and the total of existing records before applying pagination
      *
      * @return List of phone numbers paginated and filtered, if any filtering parameter was specified
+     * and the total of existing records before applying pagination
      */
-    public List<PhoneNumberDTO> getAllPhoneNumbers(PhoneNumberRequest request) {
+    public PhoneNumberList getAllPhoneNumbers(PhoneNumberRequest request) {
         return repository.selectPhoneNumbers(request);
     }
 

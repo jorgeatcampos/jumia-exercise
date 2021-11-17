@@ -1,6 +1,7 @@
 package app.repository;
 
 import app.dto.PhoneNumberDTO;
+import app.dto.PhoneNumberList;
 import app.dto.PhoneNumberRequest;
 import app.model.PhoneNumberEnum;
 import com.vladmihalcea.hibernate.query.ListResultTransformer;
@@ -24,8 +25,9 @@ public class PhoneNumberRepository {
      *
      * @param request Object containing filtering parameters and pagination settings
      * @return List of phone numbers paginated and filtered, if any filtering parameter was specified
+     * and the total of existing records before applying pagination
      */
-    public List<PhoneNumberDTO> selectPhoneNumbers(PhoneNumberRequest request) {
+    public PhoneNumberList selectPhoneNumbers(PhoneNumberRequest request) {
         String sql = selectPhoneNumbersQueryBuilder(request.getCountry(), request.getIsValid());
 
         Query query = entityManager.createNativeQuery(sql);
@@ -42,10 +44,9 @@ public class PhoneNumberRepository {
                 )
                 .getResultList();
 
-//        if (request.getIsValid() != null)
-//            phoneNumberDTOList.removeIf(dto -> !dto.isState() == request.getIsValid());
+        Query queryCount = entityManager.createNativeQuery("SELECT COUNT(*) FROM (" + sql + ")");
 
-        return phoneNumberDTOList;
+        return new PhoneNumberList(phoneNumberDTOList, (Integer) queryCount.getSingleResult());
     }
 
     /**
@@ -77,13 +78,13 @@ public class PhoneNumberRepository {
             sqlQuery.append("\nWHERE c.phone LIKE '%(").append(countryCode).append(")%'");
         }
 
-        if (numbersShouldBeValid != null) {
-            String isValid = numbersShouldBeValid ? "" : "NOT";
-            String clause = sqlQuery.toString().contains("WHERE") ? "\n\tAND" : "\nWHERE";
-
-            sqlQuery.append(clause).append(" (");
-
-            // If there's a specified country, validate only by its regex, otherwise it should validate by all the regexes
+//        if (numbersShouldBeValid != null) {
+//            String isValid = numbersShouldBeValid ? "" : "NOT";
+//            String clause = sqlQuery.toString().contains("WHERE") ? "\n\tAND" : "\nWHERE";
+//
+//            sqlQuery.append(clause).append(" (");
+//
+//            //If there's a specified country, validate only by its regex, otherwise it should validate by all the regexes
 //            if (country != null) {
 //                sqlQuery.append("c.phone REGEXP '").append(PhoneNumberEnum.getRegexByCountryCode(countryCode)).append("'");
 //            } else {
@@ -92,9 +93,9 @@ public class PhoneNumberRepository {
 //
 //                sqlQuery.setLength(sqlQuery.length() - 4); // remove the last 'AND'
 //            }
-
-            sqlQuery.append(")");
-        }
+//
+//            sqlQuery.append(")");
+//        }
 
         return sqlQuery.toString();
     }
