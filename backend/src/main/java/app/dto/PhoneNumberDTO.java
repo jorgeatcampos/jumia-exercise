@@ -13,6 +13,11 @@ import lombok.Setter;
 @Setter
 public class PhoneNumberDTO {
     /**
+     * Customer's ID
+     */
+    private int id;
+
+    /**
      * Name of the costumer who owns the phone number
      */
     private String customerName;
@@ -40,16 +45,19 @@ public class PhoneNumberDTO {
     /**
      * Creates a new PhoneNumberDTO instance
      *
+     * @param id Customer's ID
      * @param customerName Name of the costumer who owns the phone number
      * @param phoneNumber Phone number
      * @throws IllegalArgumentException If any of the parameters are null or if the phone number doesn't contain a country code
      */
-    public PhoneNumberDTO(String customerName, String phoneNumber) {
-        if (customerName == null)
+    public PhoneNumberDTO(int id, String customerName, String phoneNumber) {
+        if (customerName == null) {
             throw new IllegalArgumentException("Customer name can't be null.");
+        }
 
         String countryCode = PhoneNumberUtil.getCountryCodeFromPhoneNumber(phoneNumber);
 
+        this.id = id;
         this.customerName = customerName;
         this.country = PhoneNumberEnum.getCountryByCountryCode(countryCode);
         this.countryCode = countryCode;

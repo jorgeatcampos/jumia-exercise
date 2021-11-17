@@ -10,8 +10,9 @@ import org.springframework.boot.test.context.SpringBootTest;
 public class PhoneNumberDTOTest {
     @Test
     public void newPhoneNumberDTO_ShouldHaveCorrectData() {
-        PhoneNumberDTO phoneNumberDTO = new PhoneNumberDTO("Customer", "(237) 695539786");
+        PhoneNumberDTO phoneNumberDTO = new PhoneNumberDTO(1, "Customer", "(237) 695539786");
 
+        Assertions.assertEquals(1, phoneNumberDTO.getId());
         Assertions.assertEquals("Customer", phoneNumberDTO.getCustomerName());
         Assertions.assertEquals(PhoneNumberEnum.CAMEROON.getCountry(), phoneNumberDTO.getCountry());
         Assertions.assertEquals(PhoneNumberEnum.CAMEROON.getCountryCode(), phoneNumberDTO.getCountryCode());
@@ -21,11 +22,11 @@ public class PhoneNumberDTOTest {
 
     @Test
     public void newPhoneNumberDTO_ThrowsExceptionIfCustomerNameIsNull() {
-        Assertions.assertThrows(IllegalArgumentException.class, () -> new PhoneNumberDTO(null, "(237) 695539786"));
+        Assertions.assertThrows(IllegalArgumentException.class, () -> new PhoneNumberDTO(1, null, "(237) 695539786"));
     }
 
     @Test
     public void newPhoneNumberDTO_ThrowsExceptionIfPhoneNumberIsNull() {
-        Assertions.assertThrows(IllegalArgumentException.class, () -> new PhoneNumberDTO("Customer", null));
+        Assertions.assertThrows(IllegalArgumentException.class, () -> new PhoneNumberDTO(1, "Customer", null));
     }
 }

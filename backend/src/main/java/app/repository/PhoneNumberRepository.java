@@ -35,8 +35,9 @@ public class PhoneNumberRepository {
                 .setResultTransformer( // method is deprecated but there's currently no alternative to it
                     (ListResultTransformer)
                         (tuple, aliases) -> new PhoneNumberDTO(
-                            ((String) tuple[0]),
-                            ((String) tuple[1])
+                            ((int) tuple[0]),
+                            ((String) tuple[1]),
+                            ((String) tuple[2])
                         )
                 )
                 .getResultList();
@@ -68,7 +69,7 @@ public class PhoneNumberRepository {
      * @return SQL query
      */
     private String selectPhoneNumbersQueryBuilder(String country, Boolean numbersShouldBeValid) {
-        StringBuilder sqlQuery = new StringBuilder("SELECT c.name AS customerName, c.phone AS phone \nFROM customer c");
+        StringBuilder sqlQuery = new StringBuilder("SELECT c.id AS id, c.name AS customerName, c.phone AS phone \nFROM customer c");
         String countryCode = null;
 
         if (country != null) {
