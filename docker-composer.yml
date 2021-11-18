@@ -1,0 +1,21 @@
+version: '3'
+
+services:
+
+  frontend:
+    build: ./frontend/
+    image: frontend:v1
+    depends_on:
+      - backend
+    ports:
+      - 4200:80
+
+  backendserver:
+    build: ./backend/
+    ports:
+      - "8080:8080"
+    restart: always
+
+networks:
+  spring-cloud-network:
+    driver: bridge
