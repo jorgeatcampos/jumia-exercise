@@ -1,5 +1,3 @@
-------------------
-√
 FROM node:alpine AS builder
 WORKDIR /app
 
